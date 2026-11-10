@@ -1,6 +1,6 @@
 # CourseFlow — LMS microservices skeleton
 
-Навчальний skeleton інформаційної системи LMS на FastAPI. Проєкт показує
+Скелет інформаційної системи LMS на FastAPI. Проєкт показує
 авторизацію, окремі бази даних, синхронну й асинхронну взаємодію мікросервісів,
 метрики, централізовані логи та розподілені трейси.
 
@@ -29,13 +29,13 @@ flowchart LR
 
 ### Мікросервіси
 
-| Сервіс | Призначення | Сховище | Порт |
-|---|---|---|---:|
-| `auth-service` | реєстрація, login, JWT, ролі | SQLite | 8001 |
-| `course-service` | список курсів та admin CRUD | PostgreSQL | 8002 |
-| `enrollment-service` | записи на курс і прогрес | PostgreSQL | 8003 |
-| `notification-service` | споживання RabbitMQ-подій | — | 8004 |
-| `frontend` | React UI та reverse proxy | — | 8080 |
+| Сервіс                 | Призначення                  | Сховище    | Порт |
+| ---------------------- | ---------------------------- | ---------- | ---: |
+| `auth-service`         | реєстрація, login, JWT, ролі | SQLite     | 8001 |
+| `course-service`       | список курсів та admin CRUD  | PostgreSQL | 8002 |
+| `enrollment-service`   | записи на курс і прогрес     | PostgreSQL | 8003 |
+| `notification-service` | споживання RabbitMQ-подій    | —          | 8004 |
+| `frontend`             | React UI та reverse proxy    | —          | 8080 |
 
 Кожен API-сервіс має `/health`, `/ready`, `/metrics` та OpenAPI-документацію
 `/docs`.
@@ -54,12 +54,12 @@ docker compose ps
 Перший запуск довший, бо Docker завантажує базові образи та Python/Node
 залежності. Після того як усі healthcheck-и стануть `healthy`, відкрийте:
 
-| Інтерфейс | URL | Облікові дані |
-|---|---|---|
-| LMS | <http://localhost:8080> | `admin` / `admin12345` |
-| Grafana | <http://localhost:3000> | `admin` / `admin` |
+| Інтерфейс           | URL                      | Облікові дані          |
+| ------------------- | ------------------------ | ---------------------- |
+| LMS                 | <http://localhost:8080>  | `admin` / `admin12345` |
+| Grafana             | <http://localhost:3000>  | `admin` / `admin`      |
 | RabbitMQ Management | <http://localhost:15672> | `lms` / `lms_password` |
-| Prometheus | <http://localhost:9090> | — |
+| Prometheus          | <http://localhost:9090>  | —                      |
 
 Прямі OpenAPI-сторінки:
 
@@ -105,24 +105,24 @@ derived field для переходу від логу до відповідно�
 
 ### Auth
 
-| Метод | Endpoint | Доступ |
-|---|---|---|
-| POST | `/api/v1/auth/register` | публічний |
-| POST | `/api/v1/auth/login` | публічний |
-| GET | `/api/v1/auth/me` | Bearer JWT |
+| Метод | Endpoint                | Доступ     |
+| ----- | ----------------------- | ---------- |
+| POST  | `/api/v1/auth/register` | публічний  |
+| POST  | `/api/v1/auth/login`    | публічний  |
+| GET   | `/api/v1/auth/me`       | Bearer JWT |
 
 Реєстрація завжди створює роль `student`. Dev-адміністратор створюється з
 налаштувань `ADMIN_USERNAME` і `ADMIN_PASSWORD`.
 
 ### Courses
 
-| Метод | Endpoint | Доступ |
-|---|---|---|
-| GET | `/api/v1/courses` | авторизований користувач |
-| GET | `/api/v1/courses/{id}` | авторизований користувач |
-| POST | `/api/v1/courses` | `admin` |
-| PATCH | `/api/v1/courses/{id}` | `admin` |
-| DELETE | `/api/v1/courses/{id}` | `admin` |
+| Метод  | Endpoint               | Доступ                   |
+| ------ | ---------------------- | ------------------------ |
+| GET    | `/api/v1/courses`      | авторизований користувач |
+| GET    | `/api/v1/courses/{id}` | авторизований користувач |
+| POST   | `/api/v1/courses`      | `admin`                  |
+| PATCH  | `/api/v1/courses/{id}` | `admin`                  |
+| DELETE | `/api/v1/courses/{id}` | `admin`                  |
 
 При першому запуску Python-код створює чотири демонстраційні курси. Подальші
 оновлення виконуються через CRUD API та одразу відображаються у UI і таблиці
@@ -130,26 +130,26 @@ Grafana.
 
 ### Enrollments
 
-| Метод | Endpoint | Доступ |
-|---|---|---|
-| GET | `/api/v1/enrollments` | власні записи користувача |
-| POST | `/api/v1/enrollments` | запис на курс |
+| Метод | Endpoint                            | Доступ                      |
+| ----- | ----------------------------------- | --------------------------- |
+| GET   | `/api/v1/enrollments`               | власні записи користувача   |
+| POST  | `/api/v1/enrollments`               | запис на курс               |
 | PATCH | `/api/v1/enrollments/{id}/progress` | оновлення власного прогресу |
 
 ## Відповідність вимогам
 
-| Вимога | Реалізація |
-|---|---|
-| СУБД у Docker | PostgreSQL для courses/enrollments, SQLite для auth |
-| Програмне оновлення даних | Python seed + захищений CRUD курсів |
-| Збір метрик | Prometheus scrape `/metrics` кожні 5 секунд |
-| Time Series Storage | вбудоване сховище Prometheus з retention 24 години |
-| Відображення даних | React LMS та PostgreSQL table panel у Grafana |
-| Логи | JSON stdout → Grafana Alloy → Loki |
-| Трейси | OpenTelemetry SDK → Collector → Tempo |
-| Авторизація | окремий FastAPI-сервіс, SQLite, JWT, ролі |
-| Контейнеризація | Dockerfile кожного сервісу + Docker Compose |
-| Обмін повідомленнями | RabbitMQ topic exchange і durable queue |
+| Вимога                    | Реалізація                                          |
+| ------------------------- | --------------------------------------------------- |
+| СУБД у Docker             | PostgreSQL для courses/enrollments, SQLite для auth |
+| Програмне оновлення даних | Python seed + захищений CRUD курсів                 |
+| Збір метрик               | Prometheus scrape `/metrics` кожні 5 секунд         |
+| Time Series Storage       | вбудоване сховище Prometheus з retention 24 години  |
+| Відображення даних        | React LMS та PostgreSQL table panel у Grafana       |
+| Логи                      | JSON stdout → Grafana Alloy → Loki                  |
+| Трейси                    | OpenTelemetry SDK → Collector → Tempo               |
+| Авторизація               | окремий FastAPI-сервіс, SQLite, JWT, ролі           |
+| Контейнеризація           | Dockerfile кожного сервісу + Docker Compose         |
+| Обмін повідомленнями      | RabbitMQ topic exchange і durable queue             |
 
 ## Корисні команди
 
@@ -206,4 +206,3 @@ docker compose down -v
   потрібен transactional outbox та retry/dead-letter queue.
 - TLS, rate limiting, secret manager, backup і Kubernetes навмисно не входять
   до навчального skeleton.
-
