@@ -1,0 +1,106 @@
+:root {
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  color: #132620;
+  background: #f4f1e8;
+  font-synthesis: none;
+  --ink: #132620;
+  --green: #245c48;
+  --lime: #c8ff62;
+  --paper: #f4f1e8;
+  --white: #fffdf8;
+  --line: rgba(19, 38, 32, 0.16);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; min-width: 320px; min-height: 100vh; }
+button, input { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+button { cursor: pointer; }
+
+.auth-shell { min-height: 100vh; display: grid; grid-template-columns: 1.05fr 0.95fr; }
+.brand-panel { background: var(--green); color: white; padding: clamp(42px, 7vw, 96px); display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; }
+.brand-panel::after { content: ""; width: 450px; height: 450px; border: 1px solid rgba(255,255,255,.15); border-radius: 50%; position: absolute; right: -150px; bottom: -180px; box-shadow: 0 0 0 65px rgba(255,255,255,.04), 0 0 0 130px rgba(255,255,255,.025); }
+.brand-mark, .wordmark span { width: 48px; height: 48px; display: inline-grid; place-items: center; border-radius: 14px; background: var(--lime); color: var(--ink); font-family: "Segoe UI", Arial, sans-serif; font-weight: 800; }
+.brand-panel .eyebrow { color: var(--lime); margin-top: 56px; }
+.brand-panel h1 { font: 800 clamp(42px, 6vw, 78px)/.98 "Segoe UI", Arial, sans-serif; letter-spacing: -.06em; max-width: 670px; margin: 12px 0 28px; }
+.brand-copy { max-width: 540px; font-size: 18px; line-height: 1.65; color: rgba(255,255,255,.75); }
+.signal-row { display: flex; align-items: center; gap: 14px; margin-top: 46px; font-size: 13px; text-transform: uppercase; letter-spacing: .16em; }
+.signal-row i { width: 36px; height: 1px; background: rgba(255,255,255,.3); }
+.auth-panel { display: grid; place-items: center; padding: 32px; }
+.auth-card { width: min(420px, 100%); }
+.eyebrow { text-transform: uppercase; letter-spacing: .16em; font-size: 12px; font-weight: 700; color: var(--green); margin: 0 0 12px; }
+.auth-card h2, .catalog h2 { font: 800 38px/1.1 "Segoe UI", Arial, sans-serif; letter-spacing: -.04em; margin: 0; }
+.muted { color: #65736d; margin: 14px 0 32px; }
+form { display: grid; gap: 18px; }
+label { display: grid; gap: 8px; font-size: 13px; font-weight: 700; }
+input { width: 100%; border: 1px solid var(--line); background: var(--white); padding: 15px 16px; border-radius: 12px; outline: none; transition: .2s; }
+input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(36,92,72,.1); }
+.primary-button, .course-card button { border: 0; border-radius: 12px; background: var(--ink); color: white; font-weight: 700; padding: 15px 20px; transition: transform .2s, background .2s; }
+.primary-button:hover, .course-card button:hover { background: var(--green); transform: translateY(-1px); }
+button:disabled { opacity: .55; cursor: wait; }
+.text-button { display: block; background: none; border: 0; color: var(--green); font-weight: 700; margin: 18px auto 0; }
+.form-message { font-size: 13px; padding: 11px 13px; border-radius: 9px; background: #e9e5d8; margin: 0; }
+.demo-hint { text-align: center; color: #78817d; font-size: 12px; margin-top: 24px; }
+
+.app-shell { min-height: 100vh; }
+header { height: 78px; padding: 0 clamp(22px, 5vw, 72px); border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; background: rgba(244,241,232,.88); backdrop-filter: blur(16px); position: sticky; top: 0; z-index: 10; }
+.wordmark { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink); font: 800 18px "Segoe UI", Arial, sans-serif; }
+.wordmark span { width: 36px; height: 36px; border-radius: 10px; font-size: 12px; }
+nav { display: flex; gap: 28px; }
+nav a { color: var(--ink); text-decoration: none; font-size: 14px; font-weight: 600; }
+.profile { display: flex; align-items: center; gap: 12px; }
+.profile div { display: grid; text-align: right; font-size: 13px; }
+.profile span { color: #75817c; font-size: 11px; text-transform: uppercase; }
+.icon-button { width: 38px; height: 38px; border: 1px solid var(--line); background: transparent; border-radius: 50%; }
+.hero { min-height: 440px; color: white; background: var(--green); padding: 78px clamp(22px, 7vw, 110px); position: relative; overflow: hidden; }
+.hero::before { content: ""; position: absolute; width: 500px; height: 500px; border-radius: 50%; border: 1px solid rgba(255,255,255,.12); right: 5%; top: -190px; box-shadow: 0 0 0 75px rgba(255,255,255,.025), 0 0 0 150px rgba(255,255,255,.018); }
+.hero .eyebrow { color: var(--lime); }
+.hero h1 { font: 800 clamp(48px, 7vw, 86px)/.95 "Segoe UI", Arial, sans-serif; letter-spacing: -.065em; margin: 10px 0 24px; }
+.hero h1 em { color: var(--lime); font-style: normal; }
+.hero > p:not(.eyebrow) { color: rgba(255,255,255,.68); font-size: 17px; max-width: 540px; }
+.hero-stats { display: flex; gap: clamp(30px, 6vw, 86px); margin-top: 44px; }
+.hero-stats div { display: grid; }
+.hero-stats strong { font: 700 26px "Segoe UI", Arial, sans-serif; }
+.hero-stats span { color: rgba(255,255,255,.55); font-size: 12px; text-transform: uppercase; letter-spacing: .1em; }
+.catalog { padding: 72px clamp(22px, 7vw, 110px) 100px; }
+.catalog-heading { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 34px; }
+.search { max-width: 300px; background: rgba(255,255,255,.5); }
+.course-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+.course-card { padding: 28px; background: var(--white); border: 1px solid var(--line); border-radius: 20px; transition: .25s; }
+.course-card:hover { transform: translateY(-3px); box-shadow: 0 16px 50px rgba(25,48,40,.08); }
+.course-topline { display: flex; justify-content: space-between; align-items: center; }
+.course-tag { background: #e8efd9; color: var(--green); border-radius: 99px; padding: 6px 10px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+.course-id { color: #a1aaa5; font: 600 12px "Segoe UI", Arial, sans-serif; }
+.course-card h3 { font: 700 24px/1.15 "Segoe UI", Arial, sans-serif; letter-spacing: -.035em; margin: 28px 0 12px; }
+.course-card > p { color: #68746f; line-height: 1.6; min-height: 52px; }
+.course-footer { border-top: 1px solid var(--line); padding-top: 20px; margin-top: 24px; display: flex; align-items: end; justify-content: space-between; gap: 16px; }
+.course-footer > div { display: grid; gap: 4px; }
+.caption { color: #8a948f; font-size: 10px; text-transform: uppercase; letter-spacing: .12em; }
+.course-footer strong { font-size: 14px; }
+.course-card button { padding: 11px 15px; font-size: 13px; }
+.enrolled-badge { color: var(--green); font-size: 12px; font-weight: 700; padding: 9px 12px; border: 1px solid rgba(36,92,72,.25); border-radius: 99px; }
+.progress-block { margin-top: 20px; padding: 17px; background: #f1f3e9; border-radius: 13px; }
+.progress-label { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 9px; }
+.progress-track { height: 7px; background: #dce1d2; border-radius: 99px; overflow: hidden; }
+.progress-track span { display: block; height: 100%; background: var(--green); border-radius: inherit; transition: width .4s; }
+.course-card .progress-button { margin-top: 12px; padding: 7px 10px; background: transparent; color: var(--green); border: 1px solid rgba(36,92,72,.25); }
+.error-banner { padding: 14px 18px; border-radius: 12px; background: #fbe4dd; color: #873522; margin-bottom: 24px; }
+footer { display: flex; justify-content: space-between; gap: 20px; padding: 28px clamp(22px, 7vw, 110px); border-top: 1px solid var(--line); color: #75817c; font-size: 12px; }
+
+@media (max-width: 800px) {
+  .auth-shell { grid-template-columns: 1fr; }
+  .brand-panel { min-height: 420px; }
+  .auth-panel { min-height: 600px; }
+  nav { display: none; }
+  .course-grid { grid-template-columns: 1fr; }
+  .hero { min-height: auto; }
+}
+@media (max-width: 520px) {
+  .profile div { display: none; }
+  .hero-stats { gap: 22px; }
+  .catalog-heading { align-items: stretch; flex-direction: column; }
+  .search { max-width: none; }
+  footer { flex-direction: column; }
+}
+
