@@ -1,0 +1,148 @@
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": { "drawStyle": "line", "fillOpacity": 18, "lineWidth": 2 },
+          "unit": "reqps"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+      "id": 1,
+      "options": { "legend": { "displayMode": "table", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "sum by (service) (rate(lms_http_requests_total[$__rate_interval]))",
+          "legendFormat": "{{service}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Request rate by service",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "custom": { "drawStyle": "line", "fillOpacity": 10, "lineWidth": 2 },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+      "id": 2,
+      "options": { "legend": { "displayMode": "table", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "histogram_quantile(0.95, sum by (le, service) (rate(lms_http_request_duration_seconds_bucket[$__rate_interval])))",
+          "legendFormat": "p95 {{service}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "p95 request latency",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": {
+        "defaults": { "color": { "mode": "thresholds" }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] } },
+        "overrides": []
+      },
+      "gridPos": { "h": 5, "w": 6, "x": 0, "y": 8 },
+      "id": 3,
+      "options": { "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "auto" },
+      "targets": [
+        { "editorMode": "code", "expr": "sum(lms_events_published_total)", "legendFormat": "Events", "range": true, "refId": "A" }
+      ],
+      "title": "Enrollment events published",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": {
+        "defaults": { "color": { "mode": "thresholds" }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] } },
+        "overrides": []
+      },
+      "gridPos": { "h": 5, "w": 6, "x": 6, "y": 8 },
+      "id": 4,
+      "options": { "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "auto" },
+      "targets": [
+        { "editorMode": "code", "expr": "sum(lms_notification_events_total)", "legendFormat": "Notifications", "range": true, "refId": "A" }
+      ],
+      "title": "Notifications processed",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": {
+        "defaults": { "color": { "mode": "thresholds" }, "mappings": [], "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }, { "color": "red", "value": 1 }] } },
+        "overrides": []
+      },
+      "gridPos": { "h": 5, "w": 12, "x": 12, "y": 8 },
+      "id": 5,
+      "options": { "colorMode": "background", "graphMode": "area", "justifyMode": "auto", "orientation": "horizontal", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "auto" },
+      "targets": [
+        { "editorMode": "code", "expr": "sum(rate(lms_http_requests_total{status=~\"5..\"}[$__rate_interval]))", "legendFormat": "5xx/s", "range": true, "refId": "A" }
+      ],
+      "title": "HTTP server errors",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "postgres", "uid": "course-db" },
+      "fieldConfig": { "defaults": {}, "overrides": [] },
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 13 },
+      "id": 6,
+      "options": { "cellHeight": "sm", "footer": { "countRows": false, "fields": "", "reducer": ["sum"], "show": false }, "showHeader": true },
+      "targets": [
+        {
+          "datasource": { "type": "postgres", "uid": "course-db" },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT id AS \"ID\", title AS \"Курс\", instructor AS \"Викладач\", duration_hours AS \"Години\", published AS \"Опубліковано\", updated_at AS \"Оновлено\" FROM courses ORDER BY created_at DESC;",
+          "refId": "A"
+        }
+      ],
+      "title": "Course catalog from PostgreSQL",
+      "type": "table"
+    },
+    {
+      "datasource": { "type": "loki", "uid": "loki" },
+      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 21 },
+      "id": 7,
+      "options": { "dedupStrategy": "none", "enableLogDetails": true, "prettifyLogMessage": true, "showCommonLabels": false, "showLabels": false, "showTime": true, "sortOrder": "Descending", "wrapLogMessage": true },
+      "targets": [
+        { "editorMode": "code", "expr": "{service=~\"auth-service|course-service|enrollment-service|notification-service\"}", "queryType": "range", "refId": "A" }
+      ],
+      "title": "Application logs",
+      "type": "logs"
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 41,
+  "tags": ["lms", "observability", "fastapi"],
+  "templating": { "list": [] },
+  "time": { "from": "now-15m", "to": "now" },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "LMS Overview",
+  "uid": "lms-overview",
+  "version": 1,
+  "weekStart": ""
+}
+
