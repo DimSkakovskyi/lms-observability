@@ -1,0 +1,29 @@
+global:
+  scrape_interval: 5s
+  evaluation_interval: 5s
+
+scrape_configs:
+  - job_name: auth-service
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["auth-service:8000"]
+
+  - job_name: course-service
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["course-service:8000"]
+
+  - job_name: enrollment-service
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["enrollment-service:8000"]
+
+  - job_name: notification-service
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["notification-service:8000"]
+
+  - job_name: prometheus
+    static_configs:
+      - targets: ["localhost:9090"]
+
