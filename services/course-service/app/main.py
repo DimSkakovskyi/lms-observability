@@ -91,13 +91,16 @@ async def ready(session: Annotated[AsyncSession, Depends(get_session)]) -> dict[
 
 @app.get("/api/v1/courses", response_model=CourseListResponse, tags=["courses"])
 async def list_courses(
-    _: Annotated[AuthenticatedUser, Depends(require_user)],
+    current_user: Annotated[AuthenticatedUser, Depends(require_user)],
     session: Annotated[AsyncSession, Depends(get_session)],
     search: Annotated[str | None, Query(max_length=100)] = None,
+    include_unpublished: Annotated[bool, Query()] = False,
     limit: Annotated[int, Query(ge=1, le=100)] = 50,
     offset: Annotated[int, Query(ge=0)] = 0,
 ) -> CourseListResponse:
-    filters = [Course.published.is_(True)]
+    filters = []
+    if not (include_unpublished and current_user.role == "admin"):
+        filters.append(Course.published.is_(True))
     if search:
         pattern = f"%{search}%"
         filters.append(or_(Course.title.ilike(pattern), Course.description.ilike(pattern)))
