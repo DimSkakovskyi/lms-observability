@@ -2,27 +2,12 @@
 
 ## Про проєкт
 
-**CourseFlow** — це навчальний скелет інформаційної системи класу LMS
+Це скелет інформаційної системи класу LMS
 (*Learning Management System*, система керування навчанням). Зі сторони
 користувача це невеликий вебзастосунок для роботи з онлайн-курсами: студент може
 зареєструватися, увійти до свого облікового запису, переглянути каталог,
 записатися на курс і змінювати свій прогрес. Адміністратор додатково керує
 курсами через візуальний інтерфейс.
-
-З технічної сторони проєкт демонструє, як одна система складається з кількох
-окремих мікросервісів. Сервіси мають власні зони відповідальності та сховища,
-спілкуються через HTTP і RabbitMQ, а їхню роботу можна перевіряти за метриками,
-логами й розподіленими трейсами в Grafana.
-
-Це не готова комерційна LMS, а лабораторний проєкт для практичного вивчення:
-
-- мікросервісної архітектури та REST API;
-- авторизації за JWT і розмежування ролей `student` та `admin`;
-- роботи з PostgreSQL і SQLite;
-- синхронного обміну через HTTP та асинхронних подій через RabbitMQ;
-- контейнеризації всієї системи за допомогою Docker Compose;
-- моніторингу, централізованих логів і розподіленого трасування;
-- автоматизованої перевірки окремих частин системи.
 
 ## Основні можливості
 
@@ -94,7 +79,7 @@
 | **PostgreSQL 17** | окремі бази курсів і записів на курси |
 | **SQLite** | локальна база користувачів сервісу авторизації |
 | **RabbitMQ 4.1** | асинхронна подія `enrollment.created` і durable-черга повідомлень |
-| **REST, JSON та OpenAPI/Swagger UI** | формат взаємодії, опис і ручна перевірка API |
+| **REST, JSON та Swagger UI** | формат взаємодії, опис і ручна перевірка API |
 
 ### Моніторинг, логи та трейси
 
@@ -152,7 +137,7 @@ flowchart LR
 | `notification-service` | споживання RabbitMQ-подій    | —          | 8004 |
 | `frontend`             | React UI та reverse proxy    | —          | 8080 |
 
-Кожен API-сервіс має `/health`, `/ready`, `/metrics` та OpenAPI-документацію
+Кожен API-сервіс має `/health`, `/ready`, `/metrics` та документацію
 `/docs`.
 
 ## Швидкий запуск
@@ -218,10 +203,6 @@ Set-ExecutionPolicy -Scope Process Bypass
 ./scripts/showcase.ps1 -Scenario rabbitmq
 ./scripts/showcase.ps1 -Scenario all
 ```
-
-Режим `-Interactive` зупиняється між сценаріями, щоб можна було пояснити
-результат під час захисту. Режим `-OpenBrowser` додатково відкриває відповідні
-сторінки Prometheus, Grafana та RabbitMQ:
 
 ```powershell
 ./scripts/showcase.ps1 -Scenario all -Interactive -OpenBrowser
@@ -305,23 +286,11 @@ Grafana.
 ## Корисні команди
 
 ```powershell
-# Статус контейнерів
-docker compose ps
-
 # Логи застосунків
 docker compose logs -f auth-service course-service enrollment-service notification-service
 
 # Перевірка всього демонстраційного flow
 ./scripts/smoke-test.ps1
-
-# Зупинка без видалення даних
-docker compose down
-```
-
-Повне очищення локальних даних (необоротно для Docker volumes цього проєкту):
-
-```powershell
-docker compose down -v
 ```
 
 ## Структура
@@ -354,14 +323,3 @@ docker compose down -v
 │   └── grafana/
 └── scripts/
 ```
-
-## Межі skeleton-реалізації
-
-- JWT використовує спільний HMAC secret. Для production варто перейти на
-  асиметричні ключі та JWKS або зовнішній identity provider.
-- Схеми таблиць створюються при старті сервісів. Наступний production-крок —
-  додати версійовані Alembic migrations.
-- Подія публікується після DB commit. Для гарантованої доставки в production
-  потрібен transactional outbox та retry/dead-letter queue.
-- TLS, rate limiting, secret manager, backup і Kubernetes навмисно не входять
-  до навчального skeleton.
